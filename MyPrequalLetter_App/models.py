@@ -74,6 +74,16 @@ class User(UserMixin, Model):
 #         database = DATABASE
 #         order_by = ('-timestamp',)
 
+class LoanProposal(Model):
+    borrower = ForeignKeyField(User, related_name='borrower')
+    loan_program = CharField(max_length=100)
+    sales_price = IntegerField()
+    base_loan_amount = IntegerField()
+    rate = DecimalField()
+
+    class Meta:
+        database = DATABASE
+
 class Relationship(Model):
     from_user = ForeignKeyField(User, related_name = 'relationships')
     to_user = ForeignKeyField(User, related_name = 'related_to')
@@ -85,5 +95,5 @@ class Relationship(Model):
 
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User,Relationship],safe=True)
+    DATABASE.create_tables([User,Relationship,LoanProposal],safe=True)
     DATABASE.close()

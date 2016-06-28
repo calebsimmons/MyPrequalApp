@@ -1,7 +1,8 @@
 from flask_wtf import Form
-from wtforms import StringField, PasswordField, TextAreaField
+from wtforms import (StringField, PasswordField, TextAreaField, IntegerField,
+                    DecimalField)
 from wtforms.validators import (DataRequired, Regexp, ValidationError, Email,
-                               Length,EqualTo)
+                               Length, EqualTo, NumberRange)
 from models import User
 
 def name_exists(form,field):
@@ -50,6 +51,29 @@ class RegisterForm(Form):
 class LoginForm(Form):
     email = StringField("Email", validators=[DataRequired(),Email()])
     password = PasswordField("Password", validators=[DataRequired()])
+
+class LetterRequest(Form):
+    loan_program = StringField("Loan Program", validators=[DataRequired()])
+    sales_price = IntegerField("Sales Price", validators=[DataRequired()])
+    down_payment = IntegerField("Down Payment",validators=[DataRequired()])
+    rate = DecimalField("Rate", validators=[DataRequired()])
+
+    def validate(self):
+        """Overwrites the default validations so that the down_payment can be
+        checked against sales_price"""
+        #this performs default validations
+        if not Form.validate(self):
+            return False
+        result = True
+        seen = set()
+        if self.down_payment.data >= self.sales_price.data:
+            self.down_payment.errors.append("Down payment must be less than sales price.")
+            result = False
+        else:
+            seen.add(self.down_payment.data)
+        return result
+
+
 
 #form unrelated to project
 #class PostForm(Form):

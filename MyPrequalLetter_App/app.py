@@ -88,9 +88,30 @@ def logout():
 #         return redirect(url_for('index'))
 #     return render_template('post.html',form=form)
 
+@app.route('/request_letter/',methods=('GET','POST'))
+@login_required
+def request_letter():
+    form = forms.LetterRequest()
+    if form.validate_on_submit():
+        base_loan_amount = form.sales_price.data-form.down_payment.data
+        total_loan_amount = base_loan_amount
+        models.LoanProposal.create(
+            borrower = g.user._get_current_object(),
+            loan_program = form.loan_program.data,
+            sales_price = form.sales_price.data,
+            base_loan_amount = base_loan_amount,
+            total_loan_amount = total_loan_amount,
+            rate = form.rate.data
+        )
+        flash("We have recived your request!","success")
+        return redirect(url_for('index'))
+    return render_template('request_letter.html',form=form)
+
 @app.route('/')
 def index():
-    return render_template('layout.html')
+    if g.user._get_current_object():
+        user = current_user
+    return render_template('index.html',user=user)
 
 #Function unrelated to project
 #@app.route('/stream')
