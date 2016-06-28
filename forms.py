@@ -54,8 +54,8 @@ class LoginForm(Form):
 
 class LetterRequest(Form):
     loan_program = StringField("Loan Program", validators=[DataRequired()])
-    sales_price = IntegerField("Sales Price", validators=[DataRequired()])
-    down_payment = IntegerField("Down Payment",validators=[DataRequired()])
+    sales_price = DecimalField("Sales Price", validators=[DataRequired()])
+    down_payment = DecimalField("Down Payment",validators=[DataRequired()])
     rate = DecimalField("Rate", validators=[DataRequired()])
 
     def validate(self):
