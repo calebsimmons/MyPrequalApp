@@ -17,6 +17,9 @@ class User(UserMixin, Model):
         database = DATABASE
         order_by = ('-joined_at',)
 
+    def get_letters(self):
+        return LoanProposal.select().where(LoanProposal.borrower == self)
+
     #methods unrelated to project
     # def get_posts(self):
     #     return Post.select().where(Post.user == self)
@@ -77,8 +80,8 @@ class User(UserMixin, Model):
 class LoanProposal(Model):
     borrower = ForeignKeyField(User, related_name='borrower')
     loan_program = CharField(max_length=100)
-    sales_price = IntegerField()
-    base_loan_amount = IntegerField()
+    sales_price = DecimalField()
+    base_loan_amount = DecimalField()
     rate = DecimalField()
 
     class Meta:

@@ -94,18 +94,26 @@ def request_letter():
     form = forms.LetterRequest()
     if form.validate_on_submit():
         base_loan_amount = form.sales_price.data-form.down_payment.data
+        print base_loan_amount
         total_loan_amount = base_loan_amount
         models.LoanProposal.create(
             borrower = g.user._get_current_object(),
             loan_program = form.loan_program.data,
-            sales_price = form.sales_price.data,
-            base_loan_amount = base_loan_amount,
-            total_loan_amount = total_loan_amount,
-            rate = form.rate.data
+            sales_price = float(form.sales_price.data),
+            base_loan_amount = float(base_loan_amount),
+            total_loan_amount = float(total_loan_amount),
+            rate = float(form.rate.data)
         )
         flash("We have recived your request!","success")
         return redirect(url_for('index'))
     return render_template('request_letter.html',form=form)
+
+@app.route('/view_letters/')
+@login_required
+def view_letters():
+    letters = current_user.get_letters().limit(100)
+    return render_template('available_letters.html',letters=letters)
+
 
 @app.route('/')
 def index():

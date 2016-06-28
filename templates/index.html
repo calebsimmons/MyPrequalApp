@@ -6,9 +6,9 @@
         <a href="{{ url_for('request_letter') }}">Request a new letter</a>
     </ul>
     <ul>
-        <a href="{{ url_for('index') }}">Print an approved letter</a>
+        <a href="{{ url_for('view_letters') }}">Print an approved letter</a>
     </ul>
 {% else %}
-    <p>Please log in to continue</p>
+    <h1>Please log in to continue</h1>
 {% endif %}
 {% endblock %}

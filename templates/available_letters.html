@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1> Available Letters </h1>
+<ul>
+    {% for letter in letters %}
+    <li><a href="#">{{ letter.loan_program }} {{ letter.sales_price }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
