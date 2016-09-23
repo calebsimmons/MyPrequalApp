@@ -76,18 +76,6 @@ def logout():
     flash("You've been logged out!",'success')
     return redirect(url_for('index'))
 
-#Function unrelated to project
-# @app.route('/new_post', methods=('GET','POST'))
-# @login_required
-# def post():
-#     form = forms.PostForm()
-#     if form.validate_on_submit():
-#         models.Post.create(user = g.user._get_current_object(),
-#                            content = form.content.data.strip())
-#         flash("Message posted! Thanks!","success")
-#         return redirect(url_for('index'))
-#     return render_template('post.html',form=form)
-
 @app.route('/request_letter/',methods=('GET','POST'))
 @login_required
 def request_letter():
@@ -120,74 +108,6 @@ def index():
     if g.user._get_current_object():
         user = current_user
     return render_template('index.html',user=user)
-
-#Function unrelated to project
-#@app.route('/stream')
-#@app.route('/stream/<username>')
-#def stream(username = None):
-#    template = 'stream.html'
-#    if username and username != current_user.username:
-#        try:
-#            user = models.User.select().where(
-#                models.User.username**username).get()
-#        except models.DoesNotExist:
-#            abort(404)
-#        else:
-#            stream = user.posts.limit(100)
-#    else:
-#        stream = current_user.get_stream().limit(100)
-#        user = current_user
-#    if username:
-#        template = 'user_stream.html'
-#    return render_template(template,stream=stream, user=user)
-
-#Function unrelated to project
-#@app.route('/post/<int:post_id>')
-#def view_post(post_id):
-#    posts = models.Post.select().where(models.Post.id == post_id)
-#    if posts.count() == 0:
-#        abort(404)
-#    return render_template('stream.html', stream=posts)
-
-#function unrelated to project
-#@app.route('/follow/<username>')
-#@login_required
-#def follow(username):
-#    try:
-#        to_user = models.User.get(models.User.username ** username)
-#    except models.DoesNotExist:
-#        abort(404)
-#    else:
-#        try:
-#            models.Relationship.create(
-#             from_user = g.user._get_current_object(),
-#             to_user = to_user
-#         )
-#     except models.IntegrityError:
-#             pass
-#     else:
-#         flash("You are now following {}!".format(to_user.username),"success")
-# return redirect(url_for('stream', username=to_user.username))
-
-#function unrelated to project
-# @app.route('/unfollow/<username>')
-# @login_required
-# def unfollow(username):
-#     try:
-#         to_user = models.User.get(models.User.username ** username)
-#     except models.DoesNotExist:
-#         abort(404)
-#     else:
-#         try:
-#             models.Relationship.get(
-#                 from_user = g.user._get_current_object(),
-#                 to_user = to_user
-#             ).delete_instance()
-#         except models.IntegrityError:
-#                 pass
-#         else:
-#             flash("You are no longer following {}!".format(to_user.username),"success")
-#     return redirect(url_for('stream', username=to_user.username))
 
 @app.errorhandler(404)
 def not_fount(error):
