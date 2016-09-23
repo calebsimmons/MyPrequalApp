@@ -75,6 +75,4 @@ class LetterRequest(Form):
 
 
 
-#form unrelated to project
-#class PostForm(Form):
-#    content = TextAreaField("What's up?", validators=[DataRequired()])
+
