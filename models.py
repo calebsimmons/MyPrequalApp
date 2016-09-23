@@ -20,37 +20,6 @@ class User(UserMixin, Model):
     def get_letters(self):
         return LoanProposal.select().where(LoanProposal.borrower == self)
 
-    #methods unrelated to project
-    # def get_posts(self):
-    #     return Post.select().where(Post.user == self)
-    #
-    # def get_stream(self):
-    #     return Post.select().where(
-    #         (Post.user == self) |
-    #         (Post.user << self.following())
-    #     )
-    #
-    # def following(self):
-    #     """Get users that the current user is following."""
-    #     return(
-    #         User.select().join(
-    #             Relationship, on=Relationship.to_user
-    #         ).where(
-    #             Relationship.from_user == self
-    #         )
-    #     )
-    #
-    # def followers(self):
-    #     """Get users that are following the current user."""
-    #     return (
-    #         User.select().join(
-    #             Relationship, on=Relationship.from_user
-    #         ).where(
-    #             Relationship.to_user == self
-    #         )
-    #     )
-
-
     @classmethod
     def create_user(cls, username, email, password, admin=False):
         try:
@@ -62,20 +31,6 @@ class User(UserMixin, Model):
                     is_admin = admin)
         except IntegrityError:
             raise ValueError('User already exists')
-
-
-#model unrelated to project
-# class Post(Model):
-#     timestamp = DateTimeField(default=datetime.datetime.now)
-#     user = ForeignKeyField(
-#         rel_model = User,
-#         related_name= 'posts'
-#     )
-#     content = TextField()
-#
-#     class Meta:
-#         database = DATABASE
-#         order_by = ('-timestamp',)
 
 class LoanProposal(Model):
     borrower = ForeignKeyField(User, related_name='borrower')
@@ -94,7 +49,6 @@ class Relationship(Model):
     class Meta:
         database = DATABASE
         indexes = (('from_user','to_user'),True)
-
 
 def initialize():
     DATABASE.connect()
